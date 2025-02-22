@@ -7,6 +7,7 @@ html {
 .navbar {
   background: url('assets/images/pcn.jpg') no-repeat center center/cover;
   color: transparent;
+  transition: background-size 0.5s ease-in-out;
 }
 .navContainer {
   position: absolute;
@@ -17,13 +18,217 @@ html {
   border-bottom: 1px solid gray;
   box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
   height: 120px;
+
+  @media (max-width: 970px) {
+    display: none;
+  }
 }
+.navContainerMobile {
+  position: absolute;
+  width: 100%;
+  z-index: 9999;
+  background: transparent !important;
+  backdrop-filter: blur(2px);
+  border-bottom: 1px solid gray;
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 2px 8px 0px;
+  height: 120px;
+}
+
+@media (min-width: 971px) {
+  .navContainerMobile {
+    display: none;
+  }
+}
+
+.navContentMobile {
+  display: flex;
+  position: relative;
+  justify-content: space-between;
+  padding: 0px 30px;
+}
+
+.menuCloseHolder {
+  display: none;
+}
+
+.menu,
+.menuClose,
+.menuFilled {
+  width: 30px;
+  height: 30px;
+  margin-top: 30px;
+  cursor: pointer;
+}
+
+html:has(#menu-toggle:checked),
+body:has(#menu-toggle:checked) {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.mobilePullDownMenu {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: #1c110b;
+  z-index: 10;
+  overflow-x: hidden;
+  transform: translateY(-100%);
+  transition: transform 0.5s ease-in-out;
+  padding: 40px;
+}
+
+#menu-toggle:checked ~ .mobilePullDownMenu {
+  display: block;
+  transform: translateY(0);
+}
+
+#menu-toggle:checked ~ .mobilePullDownMenu .menuCloseHolder {
+  display: block;
+}
+
+#menu-toggle:checked ~ .navContentMobile .menu {
+  display: none;
+}
+.menuCloseHolderLogo {
+  display: block;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+.menuCloseContentHolder {
+  display: block;
+  position: absolute;
+  top: 20px;
+  right: 20px;
+}
+@media (max-width: 660px) {
+  .menuFilled {
+    display: flex;
+  }
+  .menu {
+    display: none;
+  }
+}
+@media (min-width: 660px) {
+  .menuFilled {
+    display: none;
+  }
+  .menu {
+    display: flex;
+  }
+}
+
+.menuCloseContent {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 15px;
+  color: white;
+  mix-blend-mode: difference;
+  z-index: 9999;
+}
+
+.menuClose {
+  transition: transform 0.5s ease-in-out;
+}
+
+.menuClose:hover {
+  transform: rotate(360deg);
+}
+
+.menuClose:not(:hover) {
+  animation: rotate-back 0.5s ease-in-out;
+}
+
+@keyframes rotate-back {
+  from {
+    transform: rotate(360deg);
+  }
+  to {
+    transform: rotate(0deg);
+  }
+}
+.mobilePullDownMenuContents {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: 120px auto;
+  gap: 20px;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+  padding-bottom: 50px;
+  border-bottom: 1px solid rgb(185, 183, 183);
+}
+#menu-toggle:checked ~ .mobilePullDownMenu .mobilePullDownMenuContents {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#menu-close-toggle:checked ~ .mobilePullDownMenu .mobilePullDownMenuContents {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
+.mobilePullDownMenuHome,
+.mobilePullDownMenuContacts {
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mobilePullDownMenuAboutUs,
+.mobilePullDownMenuMinistries,
+.mobilePullDownMenuMedia {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+}
+.mobilePullDownMenuAboutUsImg,
+.mobilePullDownMenuMinistriesImg,
+.mobilePullDownMenuMediaImg {
+  width: 25px;
+  height: 25px;
+}
+
+.mobileSocials {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  align-items: center;
+  margin-top: -70px;
+  transform: translateY(-100%);
+  opacity: 0;
+  transition: transform 1.5s ease-in-out, opacity 1.5s ease-in-out;
+  padding-bottom: 50px;
+}
+#menu-toggle:checked ~ .mobilePullDownMenu .mobileSocials {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+#menu-close-toggle:checked ~ .mobilePullDownMenu .mobileSocials {
+  transform: translateY(-100%);
+  opacity: 0;
+}
+
 .navContent {
   display: flex;
   padding: 0px 30px;
   gap: 50px;
 }
-.logo {
+.logo,
+.menuCloseHolderLogo {
   width: 120px;
   height: 120px;
 }
@@ -170,14 +375,14 @@ html {
 
 .heroHeading {
   color: white;
-  font-size: 100px;
+  font-size: clamp(30px, 10vw, 100px);
   font-weight: 700;
   animation: sineWave 3s infinite ease-in-out;
 }
 
 .heroInfo {
   color: white;
-  font-size: 50px;
+  font-size: clamp(10px, 10vw, 50px);
   font-weight: 600;
   animation: sineWave 3s infinite ease-in-out;
 }
@@ -192,7 +397,7 @@ html {
   align-items: center;
   text-align: center;
   color: white;
-  font-size: 60px;
+  font-size: clamp(16px, 5vw, 60px);
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-weight: 500;
 }
@@ -201,6 +406,12 @@ html {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
+  @media (max-width: 870px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .worshipScheduleHolder {
   display: flex;
@@ -231,9 +442,16 @@ html {
 .activities {
   display: grid;
   grid-template-columns: 3fr 1fr;
+  gap: 20px;
   padding: 30px 80px;
   background-color: rgb(27, 27, 109);
   transition: transform 0.3s ease, background-color 0.3s;
+  @media (max-width: 608px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 560px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .activitiesContents {
   display: flex;
@@ -323,7 +541,7 @@ html {
   text-align: center;
   font-weight: 700;
   color: black;
-  font-size: 60px;
+  font-size: clamp(20px, 5vw, 60px);
 }
 .aboutUsBtn {
   display: flex;
@@ -356,6 +574,12 @@ hr {
   padding: 30px 80px;
   background: rgb(85, 83, 83);
   transition: transform 0.3s ease, background-color 0.3s;
+  @media (max-width: 620px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 601px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .sermonContent {
   display: flex;
@@ -366,7 +590,7 @@ hr {
   display: flex;
   color: white;
   font-weight: 500;
-  font-size: 44px;
+  font-size: clamp(14px, 5vw, 40px);
 }
 .sermonHeader {
   display: flex;
@@ -407,7 +631,7 @@ hr {
   margin-top: 20px;
 }
 .visionText {
-  font-size: 50px;
+  font-size: clamp(12px, 5vw, 50px);
   font-weight: 700;
   text-align: center;
   max-width: 800px;
@@ -416,6 +640,12 @@ hr {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   gap: 30px;
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 550px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .visionContents {
   display: flex;
@@ -463,11 +693,14 @@ hr {
   width: 100%;
   height: 500px;
 }
+
+/* Two columns for the second part */
 .revivalPicturesPartTwoHolder {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
 }
 
+/* Ensures images fit properly */
 .revivalPicturesOne,
 .revivalPicturesTwo,
 .revivalPicturesThree,
@@ -475,31 +708,62 @@ hr {
 .revivalPicturesFive {
   overflow: hidden;
 }
+
 .revivalPicturesTwo,
 .revivalPicturesThree,
 .revivalPicturesFour,
 .revivalPicturesFive {
   height: 250px;
 }
+
 .worshipImg {
   width: 100%;
   height: 100%;
   transition: transform 0.3s ease-in-out;
   cursor: pointer;
 }
+
 .worshipImg:hover {
   transform: scale(1.1);
 }
+
+@media (max-width: 768px) {
+  .revivalPictures {
+    grid-template-columns: repeat(1, 1fr);
+    height: auto;
+  }
+
+  .revivalPicturesPartTwoHolder {
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .revivalPicturesTwo,
+  .revivalPicturesThree,
+  .revivalPicturesFour,
+  .revivalPicturesFive {
+    height: auto;
+  }
+}
+
+@media (max-width: 480px) {
+  .worshipImg {
+    transition: transform 0.2s ease-in-out;
+  }
+}
+
 .updatesForm {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 20px;
   padding: 30px 80px 0px 80px;
   border-bottom: 2px solid teal;
+  @media (max-width: 858px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .updateInfo {
   display: flex;
-  font-size: 30px;
+  font-size: clamp(17px, 3vw, 30px);
   font-weight: 700;
 }
 .updateFormContainer {
@@ -550,10 +814,16 @@ hr {
   display: grid;
   grid-template-columns: 3fr 1fr;
   padding: 40px 80px;
+  @media (max-width: 700px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 500px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .whatsAppUpdateText {
   display: flex;
-  font-size: 30px;
+  font-size: clamp(17px, 3vw, 30px);
   font-weight: 700;
 }
 .whatsAppUpdateBtn {
@@ -673,16 +943,67 @@ hr {
   flex-direction: column;
   gap: 10px;
 }
+@media (max-width: 1024px) {
+  .calenderEvents {
+    grid-template-columns: 1fr;
+    padding: 40px;
+  }
+  .calenderEventsContentsTextHolder {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  .calenderEventsSchedule {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .calenderEvents {
+    padding: 30px;
+  }
+  .calenderEventsCaption {
+    text-align: center;
+  }
+  .calenderEventsSchedule {
+    flex-direction: column;
+    align-items: center;
+  }
+  .calenderEventsBtn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .calenderEventsHeaderOne {
+    font-size: 18px;
+  }
+  .calenderEventsHeaderTwo {
+    font-size: 24px;
+  }
+  .calenderEventsText {
+    font-size: 14px;
+  }
+  .calenderEventsScheduleDateOne {
+    font-size: 24px;
+  }
+  .calenderEventsScheduleContentOne {
+    font-size: 18px;
+  }
+}
+
 .churchMember {
   display: grid;
   grid-template-columns: 3fr 1fr;
   background-color: #f66646;
   padding: 40px 80px;
+  @media (max-width: 600px) {
+    grid-template-columns: repeat(1, 1fr);
+  }
 }
 .memberInfo {
   display: flex;
   font-weight: 600;
-  font-size: 30px;
+  font-size: clamp(17px, 3vw, 30px);
   color: white;
 }
 .churchMemberBtn {
@@ -709,8 +1030,13 @@ hr {
 .footerContents {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  padding-bottom: 20px;
+  padding-bottom: 40px;
   border-bottom: 1px solid white;
+  @media (max-width: 900px) {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
 }
 .footerImg {
   width: 120px;
@@ -744,6 +1070,10 @@ hr {
   list-style: none;
   color: white;
   gap: 20px;
+  @media (max-width: 900px) {
+    margin-left: -30px;
+    gap: 5px;
+  }
 }
 .footerGetInTouch {
   display: flex;
@@ -761,12 +1091,12 @@ hr {
   cursor: pointer;
 }
 .footerLinksText {
-    font-size: 14px;
-    font-weight: 400;
+  font-size: 14px;
+  font-weight: 400;
 }
 .copyright {
-    display: flex;
-    font-size: 13px;
-    color: white;
-    margin-top: 10px;
+  display: flex;
+  font-size: 13px;
+  color: white;
+  margin-top: 10px;
 }
